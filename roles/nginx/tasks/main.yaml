@@ -1,0 +1,10 @@
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx-full
+    update_cache: yes
+
+- name: Index page
+  ansible.builtin.copy:
+    src: index.html
+    dest: /var/www/html/index.html
+

@@ -1,0 +1,19 @@
+- name: Add the user 'juri'
+  ansible.builtin.user:
+    name: juri
+
+- name: Add the user 'roman'
+  ansible.builtin.user:
+    name: roman
+
+- name: juri
+  ansible.posix.authorized_key:
+    user: juri
+    state: present
+    key: "{{ lookup('url', 'https://github.com/hudolejev.keys', split_lines=False) }}"
+      
+- name: roman
+  ansible.posix.authorized_key:
+    user: roman
+    state: present
+    key: "{{ lookup('url', 'https://github.com/romankuchin.keys', split_lines=False) }}"
