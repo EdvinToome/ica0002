@@ -17,3 +17,14 @@
     user: roman
     state: present
     key: "{{ lookup('url', 'https://github.com/romankuchin.keys', split_lines=False) }}"
+
+- name: Add the user 'agama'
+  ansible.builtin.user:
+    name: agama
+
+- name: Create a directory /opt/agama owned by user agama where the application will be installed
+  ansible.builtin.file:
+    path: /opt/agama
+    state: directory
+    mode: '0755'
+    owner: agama

@@ -3,8 +3,20 @@
     name: nginx-full
     update_cache: yes
 
-- name: Index page
+- name: Start service nginx, if not started
+  ansible.builtin.service:
+    name: nginx
+    state: started
+
+- name: Enable service nginx, and not touch the state
+  ansible.builtin.service:
+    name: nginx
+    enabled: yes
+
+- name: NGINX config
   ansible.builtin.copy:
-    src: index.html
-    dest: /var/www/html/index.html
+    src: default
+    dest: /etc/nginx/sites-enabled/default
+  notify:
+    - Restart nginx
 
