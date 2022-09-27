@@ -1,7 +1,7 @@
 - name: Install nginx
   ansible.builtin.apt:
     name: nginx-full
-    update_cache: yes
+#    update_cache: yes
 
 - name: Start service nginx, if not started
   ansible.builtin.service:

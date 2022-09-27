@@ -1,7 +1,9 @@
 - name: Install agama dependency
   ansible.builtin.apt:
-    name: python3-flask-sqlalchemy
-    update_cache: yes
+    name: 
+      - python3-flask-sqlalchemy
+      - python3-pymysql 
+#    update_cache: yes
 
 - name: Download agama
   ansible.builtin.get_url:
