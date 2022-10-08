@@ -1,0 +1,12 @@
+- name: restart_prometheus
+  systemd:
+    name: prometheus
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+
+- name: Restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

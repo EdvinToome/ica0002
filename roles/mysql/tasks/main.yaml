@@ -1,10 +1,13 @@
+- name: Install python3-pymysql
+  ansible.builtin.apt:
+    name: python3-pymysql
+
 - name: Install mysql-server
   ansible.builtin.apt:
     name: mysql-server
 
-- name: Install python3-pymysql
-  ansible.builtin.apt:
-    name: python3-pymysql
+
+
 
 - name: Start service mysql, if not started
   ansible.builtin.service:

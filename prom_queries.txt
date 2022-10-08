@@ -1,0 +1,7 @@
+CPU load:
+
+1-rate(node_cpu_seconds_total{mode="idle"}[1m])
+
+Memory usage %:
+
+node_memory_MemFree_bytes/node_memory_MemTotal_bytes*100
