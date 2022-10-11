@@ -9,3 +9,18 @@
     - {{ server }}:9100
 {% endfor %}
 {% endif %}
+- job_name: bind9
+  scrape_interval: 15s
+  static_configs:
+  - targets:
+    - EdvinToome-2:9119
+- job_name: nginx
+  scrape_interval: 15s
+  static_configs:
+  - targets:
+    - EdvinToome-2:9113
+- job_name: mysqld
+  scrape_interval: 15s
+  static_configs:
+  - targets:
+    - EdvinToome-2:9104

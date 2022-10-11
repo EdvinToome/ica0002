@@ -19,6 +19,10 @@
       - mysql
       - prometheus
       - node_exporter
+      - mysql_exporter
+      - bind_exporter
+      - nginx_exporter
+      - grafana
 
   - name: Web server
     hosts: web_servers

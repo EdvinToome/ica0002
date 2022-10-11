@@ -1,0 +1,6 @@
+- name: reload_daemon_and_restart_mysqld_exporter
+  systemd:
+    name: prometheus-mysqld-exporter 
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
