@@ -32,18 +32,6 @@
     dest: /etc/grafana/grafana.ini
   notify: Restart grafana
 
-- name: Update grafana password
-  community.grafana.grafana_user:
-    url: "http://localhost:3000"
-    url_username: admin
-    url_password: admin
-    email: admin@localhost
-    name: "admin"
-    login: admin
-    password: "{{ mysql_password }}"
-    is_admin: true
-    state: absent
-
 - name: Create a directory /var/lib/grafana/dashboards/
   ansible.builtin.file:
     path: /var/lib/grafana/dashboards/
@@ -52,7 +40,7 @@
 
 - name: Create dashboards
   ansible.builtin.copy:
-    src: dash.json
+    src: main.json
     dest: /var/lib/grafana/dashboards/dash.json
 
 - name: Dashboard copy
