@@ -38,17 +38,17 @@
     state: directory
     mode: '0755'
 
-- name: Create dashboards
-  ansible.builtin.copy:
-    src: main.json
-    dest: /var/lib/grafana/dashboards/dash.json
-
-- name: Dashboard copy
-  template:
-    src: dashboard.yaml.j2
-    dest: /etc/grafana/provisioning/dashboards/dashboard.yaml
-
-- name: Datasource copy
-  template:
-    src: datasource.yaml.j2
-    dest: /etc/grafana/provisioning/datasources/datasource.yaml
+#- name: Create dashboards
+#  ansible.builtin.copy:
+#    src: main.json
+#    dest: /var/lib/grafana/dashboards/dash.json
+#
+#- name: Dashboard copy
+#  template:
+#    src: dashboard.yaml.j2
+#    dest: /etc/grafana/provisioning/dashboards/dashboard.yaml
+#
+#- name: Datasource copy
+#  template:
+#    src: datasource.yaml.j2
+#    dest: /etc/grafana/provisioning/datasources/datasource.yaml
