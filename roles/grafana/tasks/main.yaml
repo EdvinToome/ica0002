@@ -2,8 +2,7 @@
   apt:
     name: gnupg,software-properties-common
     state: present
-    update_cache: yes
-    cache_valid_time: 3600
+
 - name: add gpg hey
   apt_key:
     url: "https://packages.grafana.com/gpg.key"
@@ -17,8 +16,7 @@
   apt:
     name: grafana
     state: latest
-    update_cache: yes
-    cache_valid_time: 3600
+
 - name: Enable grafana
   systemd:
     name: grafana-server
@@ -37,6 +35,18 @@
     path: /var/lib/grafana/dashboards/
     state: directory
     mode: '0755'
+
+- name: Restart grafana
+  systemd:
+    name: grafana-server
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+
+- name: Change password
+  shell: 
+    cmd: grafana-cli admin reset-admin-password {{ mysql_password }}
 
 #- name: Create dashboards
 #  ansible.builtin.copy:

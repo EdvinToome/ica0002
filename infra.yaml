@@ -23,6 +23,8 @@
       - bind_exporter
       - nginx_exporter
       - grafana
+      - influxdb
+      - influxdb_exporter
 
   - name: Web server
     hosts: web_servers

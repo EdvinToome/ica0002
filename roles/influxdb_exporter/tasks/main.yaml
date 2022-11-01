@@ -1,0 +1,28 @@
+- name: check if influxdb_exporter exist
+  stat:
+    path: /usr/local/bin/influxdb_exporter
+  register: __check_influxdb_exporter_present
+
+- name: Download influxdb exporter
+  get_url:
+    url: https://github.com/carlpett/influxdb_stats_exporter/releases/download/v0.1.1/influx_stats_exporter_linux_amd64
+    dest: /usr/local/bin/influxdb_exporter
+    owner: prometheus
+    group: prometheus
+    mode: '0755'
+
+- name: install service
+  template:
+    src: prometheus-influxdb-stats-exporter.service.j2
+    dest: /etc/systemd/system/prometheus-influxdb-stats-exporter.service
+    owner: root
+    group: root
+    mode: 0755
+
+
+- name: Enable influxdb_exporter
+  systemd:
+    name: prometheus-influxdb-stats-exporter
+    state: started
+    daemon_reload: yes
+    enabled: yes

@@ -1,0 +1,11 @@
+[Unit]
+Description=Somedescription
+Documentation=https://github.com/romankuchin/ica0002-2022/blob/main/08-logging/README.md
+After=network-online.target
+
+[Service]
+User=pinger
+ExecStart=/usr/local/bin/pinger/pinger.sh
+
+[Install]
+WantedBy=multi-user.target

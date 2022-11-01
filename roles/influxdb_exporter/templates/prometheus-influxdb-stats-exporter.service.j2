@@ -1,0 +1,11 @@
+[Unit]
+Description=InfluxDB exporter
+After=network-online.target
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/influxdb_exporter/influx_stats_exporter_linux_amd64
+[Install]
+WantedBy=multi-user.target
+

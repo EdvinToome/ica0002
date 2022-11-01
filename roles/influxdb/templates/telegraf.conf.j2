@@ -1,0 +1,11 @@
+[[outputs.influxdb]]
+  urls = ["http://127.0.0.1:8086"]
+ 
+[[inputs.syslog]]
+  ## Protocol, address and port to host the syslog receiver.
+  ## If no host is specified, then localhost is used.
+  ## If no port is specified, 6514 is used (RFC5425#section-4.1).
+  ##   ex: server = "tcp://localhost:6514"
+  ##       server = "udp://:6514"
+  ##       server = "unix:///var/run/telegraf-syslog.sock"
+  server = "udp://:6514"

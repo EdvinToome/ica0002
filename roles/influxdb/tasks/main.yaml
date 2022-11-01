@@ -1,0 +1,113 @@
+- name: add influxdb key
+  apt_key:
+    url: "https://repos.influxdata.com/influxdb.key"
+    validate_certs: no
+
+- name: add repository influxdb
+  apt_repository:
+    repo: "deb https://repos.influxdata.com/debian stable main"             
+    state: present
+    validate_certs: no
+
+- name: install influxdb
+  apt:
+    name: influxdb
+    state: latest
+
+- name: config influxdb
+  template:
+    src: influxdb.conf.j2
+    dest: /etc/influxdb/influxdb.conf
+    mode: '777'
+  notify: Restart influxdb
+
+- name: install fping
+  apt:
+    name: fping
+    state: latest
+
+- name: Enable influxdb
+  systemd:
+    name: influxdb
+    state: started
+    daemon_reload: yes
+    enabled: yes
+
+- name: Add the user 'pinger'
+  ansible.builtin.user:
+    name: pinger
+
+- name: config pinger.service
+  template:
+    src: pinger.service.j2
+    dest: /etc/systemd/system/pinger.service
+    mode: '777'
+    owner: pinger
+  notify: Restart pinger
+
+- name: Create a directory /usr/local/bin/pinger/
+  ansible.builtin.file:
+    path: /usr/local/bin/pinger/
+    state: directory
+    mode: '777'
+    owner: pinger
+
+- name: config pinger.sh
+  template:
+    src: pinger.sh.j2
+    dest: /usr/local/bin/pinger/pinger.sh
+    mode: '777'
+    owner: pinger
+  notify: Restart pinger
+
+
+- name: Create a directory /etc/pinger/
+  ansible.builtin.file:
+    path: /etc/pinger/
+    state: directory
+    mode: '777'
+    owner: pinger
+
+- name: config pinger.conf
+  template:
+    src: pinger.conf.j2
+    dest: /etc/pinger/pinger.conf
+    mode: '777'
+    owner: pinger
+  notify: Restart pinger
+
+- name: Enable pinger
+  systemd:
+    name: pinger
+    state: started
+    daemon_reload: yes   
+    enabled: yes
+
+- name: install telegraf
+  apt:
+    name: telegraf
+    state: latest
+
+- name: config telegraf
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    mode: '777'
+  notify: Restart telegraf
+
+
+
+- name: config rsyslog
+  template:
+    src: 50-telegraf2.conf.j2
+    dest: /etc/rsyslog.d/50-telegraf2.conf
+    mode: '777'
+  notify: Restart rsyslog
+
+- name: Enable telegraf
+  systemd:
+    name: telegraf
+    state: started
+    daemon_reload: yes
+    enabled: yes
+
