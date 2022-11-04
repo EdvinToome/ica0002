@@ -10,6 +10,9 @@ mysql_password: !vault |
           3635336566623034350a646137646664656365326138633337666433636462643661616562636431
           34653031623737323065343666363433306639313261346366616666343838653965
 
+backup_server_ip: "192.168.42.132"
+backup_server_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90"
+domain: "{{  startup_name  }}"
 #Node Exporter variables     
 
 node_exporter_version: "1.1.2"

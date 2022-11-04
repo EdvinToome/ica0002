@@ -12,6 +12,7 @@
     repo: "deb https://packages.grafana.com/oss/deb stable main"             
     state: present
     validate_certs: no
+    update_cache: yes
 - name: install grafana
   apt:
     name: grafana
