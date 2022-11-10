@@ -3,6 +3,11 @@
     name: gnupg,software-properties-common
     state: present
 
+- name: install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
+
 - name: add gpg hey
   apt_key:
     url: "https://packages.grafana.com/gpg.key"

@@ -24,9 +24,11 @@
       - mysql_exporter
       - bind_exporter
       - nginx_exporter
-      - grafana
+ #     - grafana
       - influxdb
       - influxdb_exporter
+      - mysql_backup
+      - influxdb_backup
 
   - name: Web server
     hosts: web_servers

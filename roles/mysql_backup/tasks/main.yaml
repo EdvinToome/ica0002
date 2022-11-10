@@ -1,0 +1,37 @@
+- name: Create a directory /home/backup/mysql
+  ansible.builtin.file:
+    path: /home/backup/mysql
+    state: directory
+    mode: '755'
+    owner: 'backup'
+
+- name: create mysql user backup
+  community.mysql.mysql_user:
+    name: "backup"
+    password: "{{ mysql_password }}"
+    priv: '*.*:PROCESS,REPLICATION CLIENT,SELECT,LOCK TABLES'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: config mysql
+  template:
+    src: .my.cnf.j2
+    dest: /home/backup/.my.cnf
+  no_log: yes 
+
+- name: schedule MySQL dumps with Cron
+  ansible.builtin.cron:
+    name: "MySQL dump"
+    minute: "0"
+    hour: "0"
+    weekday: "0"
+    job: "mysqldump agama > /home/backup/mysql/agama.sql"
+    user: backup
+
+- name: schedule MySQL dumps with Cron
+  ansible.builtin.cron:
+    name: "MySQL dump"
+    minute: "0"
+    hour: "1"
+    weekday: "0"
+    job: "duplicity --no-encryption incremental /home/backup/mysql/ rsync://EdvinToome@backup.larsenbiscuits.io/mysql"
+    user: backup

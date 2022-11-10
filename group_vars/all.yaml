@@ -15,7 +15,7 @@ backup_server_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQG
 domain: "{{  startup_name  }}"
 #Node Exporter variables     
 
-node_exporter_version: "1.1.2"
+node_exporter_version: "1.4.0"
 node_exporter_bin: /usr/local/bin/node_exporter
 node_exporter_user: node-exporter
 node_exporter_group: "{{ node_exporter_user }}"
