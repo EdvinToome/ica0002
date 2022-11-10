@@ -5,18 +5,18 @@
     mode: '755'
     owner: 'backup'
 
-- name: schedule MySQL dumps with Cron
+- name: schedule Influxdb dumps with Cron
   ansible.builtin.cron:
-    name: "MySQL dump"
+    name: "InfluxDB dump"
     minute: "0"
     hour: "0"
     weekday: "0"
     job: "influxd backup -portable /home/backup/influxdb"
     user: backup
 
-- name: schedule MySQL dumps with Cron
+- name: schedule Influxdb dumps with Cron
   ansible.builtin.cron:
-    name: "MySQL dump"
+    name: "Influxdb dump"
     minute: "0"
     hour: "1"
     weekday: "0"
