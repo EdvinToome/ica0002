@@ -1,7 +1,12 @@
 - name: install gpg
   apt:
     name: gnupg,software-properties-common
-    state: present
+    state: latest
+
+- name: install ca-certificates
+  apt:
+    name: ca-certificates
+    state: latest
 
 - name: install apt-transport-https
   apt:
@@ -15,9 +20,7 @@
 - name: add repository
   apt_repository:
     repo: "deb https://packages.grafana.com/oss/deb stable main"             
-    state: present
-    validate_certs: no
-    update_cache: yes
+
 - name: install grafana
   apt:
     name: grafana

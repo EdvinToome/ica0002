@@ -9,7 +9,7 @@ mysql_password: !vault |
           34393263623266613461346464396462336662393734303739633438366464633539626338363936
           3635336566623034350a646137646664656365326138633337666433636462643661616562636431
           34653031623737323065343666363433306639313261346366616666343838653965
-
+mysql_backup_host: "{{ groups['db_servers'] | reject('eq', mysql_host) | first | default(mysql_host) }}"
 backup_server_ip: "192.168.42.132"
 backup_server_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90"
 domain: "{{  startup_name  }}"
@@ -41,3 +41,4 @@ prometheus_var_config:
       scrape_interval: 30s
       static_configs:
         - targets: ['localhost:9090']
+node_id: "{{ (ansible_port / 100) | int }}"

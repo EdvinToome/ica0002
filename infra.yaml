@@ -24,7 +24,7 @@
       - mysql_exporter
       - bind_exporter
       - nginx_exporter
- #     - grafana
+      - grafana
       - influxdb
       - influxdb_exporter
       - mysql_backup

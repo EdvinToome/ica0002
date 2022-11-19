@@ -23,3 +23,8 @@
   no_log: yes 
   notify: restart mysql exporter
 
+- name: config prometheus-mysqld-exporter
+  template:
+    src: prometheus-mysqld-exporter.j2
+    dest: /etc/default/prometheus-mysqld-exporter
+  notify: restart mysql exporter

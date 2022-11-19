@@ -26,6 +26,7 @@
     weekday: "0"
     job: "mysqldump agama > /home/backup/mysql/agama.sql"
     user: backup
+  when: inventory_hostname == mysql_backup_host
 
 - name: schedule MySQL dumps with Cron
   ansible.builtin.cron:
@@ -35,3 +36,4 @@
     weekday: "0"
     job: "duplicity --no-encryption incremental /home/backup/mysql/ rsync://EdvinToome@backup.larsenbiscuits.io/mysql"
     user: backup
+  when: inventory_hostname == mysql_backup_host

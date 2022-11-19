@@ -20,8 +20,8 @@
     enabled: yes
 
 - name: mysql config
-  ansible.builtin.copy:
-    src: override.cnf
+  ansible.builtin.template:
+    src: override.cnf.j2
     dest: /etc/mysql/mysql.conf.d/override.cnf
   notify:
     - Restart mysql
@@ -30,6 +30,9 @@
   community.mysql.mysql_db:
     name: "{{ mysql_database }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+  notify:
+    - Reset MySQL source
+    - Reset MySQL replica
 
 - name: MySQL user
   community.mysql.mysql_user:
@@ -39,3 +42,20 @@
     host: "%"
     priv: "{{ mysql_database }}.*:ALL"
     
+- name: MySQL user replication
+  community.mysql.mysql_user:
+    name: "replication"
+    password: "{{ mysql_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    priv: "*.*:SUPER,PROCESS,REPLICATION SLAVE,SELECT"
+    host: "%"
+  
+- name: MySQL read only for replica server
+  community.mysql.mysql_variables:
+    variable: read_only
+    value: "{{ 'OFF' if inventory_hostname == mysql_host else 'ON' }}"
+    mode: persist
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  notify:
+    - Reset MySQL source
+    - Reset MySQL replica
