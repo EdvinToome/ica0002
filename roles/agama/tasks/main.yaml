@@ -5,9 +5,38 @@
       - python3-pymysql 
 #    update_cache: yes
 
+- name: Create a directory /opt/agama 
+  ansible.builtin.file:
+    path: /opt/agama
+    state: directory
+    mode: '0777'
+    owner: root
+
 - name: Download agama
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
-    dest: /opt/agama
+    dest: /opt/agama/agama.py
     mode: '0755'
 
+- name: Download agama docker
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/hudolejev/agama/master/Dockerfile
+    dest: /opt/agama/Dockerfile
+    mode: '0755'
+
+- name: Build an image and push it to a private repo
+  community.docker.docker_image:
+    build:
+      path: /opt/agama
+    name: agama
+    source: build
+
+- name: Run agama container
+  community.docker.docker_container:
+    name: agama
+    image: agama
+    state: started
+    user: "0:0"
+    published_ports: "{{ agama_port }}:8000"
+    env:
+      AGAMA_DATABASE_URI: mysql+pymysql://{{ mysql_user }}:{{ mysql_password }}@{{ hostvars[mysql_host]['ansible_default_ipv4']['address'] }}/{{ mysql_database }}

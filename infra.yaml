@@ -18,6 +18,7 @@
     hosts: db_servers
     become: yes
     roles:
+      - docker
       - mysql
       - prometheus
       - node_exporter
@@ -39,6 +40,8 @@
       - uwsgi
       - nginx
       - node_exporter
+    tags:
+      - web
  # - name: Setup
  #   hosts: all
  #   become: yes
