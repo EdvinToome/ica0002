@@ -1,11 +1,13 @@
-# # config file version
 apiVersion: 1
-
- providers:
-  - name: 'Main'
+providers:
+  - name: 'prometheus'
     orgId: 1
-    folder: 'General'
+    folder: ''
     folderUid: ''
     type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: false
     options:
-      path: /var/lib/grafana/dashboards/dash.json
+      path: /var/lib/grafana/dashboards/main.json
+      foldersFromFilesStructure: true

@@ -19,24 +19,39 @@
     become: yes
     roles:
       - docker
+      - users
+      - agama
+
       - mysql
       - prometheus
       - node_exporter
       - mysql_exporter
       - bind_exporter
       - nginx_exporter
-      - grafana
+
       - influxdb
       - influxdb_exporter
       - mysql_backup
       - influxdb_backup
+      - keepalived
+      - haproxy
+    tags:
+      - db
+
+  - name: Grafana
+    hosts: grafana_servers
+    become: yes
+    roles:
+      - grafana
+    tags:
+      - g
 
   - name: Web server
     hosts: web_servers
     become: yes
     roles:
       - users
-      - agama
+      - nginx
       - uwsgi
       - nginx
       - node_exporter

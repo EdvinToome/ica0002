@@ -1,5 +1,5 @@
-EdvinToome-1 ansible_host=193.40.156.67 ansible_port=1522 ansible_ssh_user=ubuntu
-EdvinToome-2 ansible_host=193.40.156.67 ansible_port=14122 ansible_ssh_user=ubuntu
+EdvinToome-1 ansible_host=193.40.156.67 ansible_port=33322 ansible_ssh_user=ubuntu
+EdvinToome-2 ansible_host=193.40.156.67 ansible_port=37322 ansible_ssh_user=ubuntu
 
 [web_servers]
 EdvinToome-1
@@ -11,3 +11,5 @@ EdvinToome-2
 [dns_servers]
 EdvinToome-2
 
+[grafana_servers]
+EdvinToome-2

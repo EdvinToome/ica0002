@@ -2,7 +2,9 @@ server {
     listen 80;
     listen [::]:80;
     server_name  _;
-
+    location / {
+        proxy_pass            http://localhost:{{ agama_port }};
+    }
     location /prometheus {
         proxy_pass            http://localhost:9090;
     }

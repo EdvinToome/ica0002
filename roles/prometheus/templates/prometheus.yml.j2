@@ -29,3 +29,14 @@
   static_configs:
   - targets:
     - EdvinToome-2:9424
+- job_name: haproxy
+  scrape_interval: 15s
+  static_configs:
+  - targets:
+    - EdvinToome-1:9101
+- job_name: keepalived
+  scrape_interval: 15s
+  static_configs:
+  - targets:
+    - EdvinToome-1:9165
+    - EdvinToome-2:9165

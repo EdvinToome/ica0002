@@ -1,4 +1,4 @@
-acl corpnets { 192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; };
+acl corpnets { 192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; 172.17.0.0/16; };
 
 options {
         directory "/var/lib/bind";
@@ -15,6 +15,7 @@ options {
         dnssec-validation no;
 
         listen-on-v6 { any; };
+
 };
 
 statistics-channels {

@@ -1,0 +1,29 @@
+global_defs {
+    enable_script_security
+}
+
+vrrp_script check_haproxy {                 
+    script "/home/keepalived_script/script.sh" 
+    weight 20                              
+    interval 1               
+}
+vrrp_instance uni {             
+    interface ens3
+    virtual_router_id 2
+    {% if inventory_hostname == 'EdvinToome-1' %}
+    priority 100
+    {% else %}
+    priority 99 
+    {% endif %}
+    advert_int 1                            
+    virtual_ipaddress {                     
+        {{ hostvars['EdvinToome-1']['ansible_default_ipv4']['address'] | ipmath(14848) }}/24                
+    }
+    unicast_peer {                          
+        {{ hostvars['EdvinToome-2']['ansible_default_ipv4']['address'] if inventory_hostname == 'EdvinToome-1' else hostvars['EdvinToome-1']['ansible_default_ipv4']['address'] }}
+    }
+    track_script {
+        check_haproxy
+    }
+}
+

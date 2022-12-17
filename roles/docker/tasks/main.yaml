@@ -3,3 +3,4 @@
     name: 
       - docker.io
       - python3-docker
+      - bridge-utils
