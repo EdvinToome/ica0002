@@ -17,6 +17,18 @@
     src: grafana.ini.j2
     dest: /opt/grafana/grafana.ini
 
+- name: Provisioning Grafana datasource
+  template:
+    src: datasource.yaml.j2
+    dest: /opt/grafana/provisioning/datasources/default.yaml
+    mode: '0755'
+
+- name: Provisioning Grafana Influx
+  template:
+    src: datasource-influx.yaml.j2
+    dest: /opt/grafana/provisioning/datasources/datasource-influx.yaml
+    mode: '0755'
+
 - name: Run Grafana container
   community.docker.docker_container:
     name: grafana
@@ -42,7 +54,6 @@
 #    is_default: true
 #  
 
-
 - name: Create a directory /var/lib/grafana/dashboards
   ansible.builtin.file:
     path: /var/lib/grafana/dashboards
@@ -55,11 +66,6 @@
 #    dest: /opt/grafana/provisioning/dashboards/default.yaml
 #    mode: '0755'
 
-- name: Provisioning Grafana datasource
-  template:
-    src: datasource.yaml.j2
-    dest: /opt/grafana/provisioning/datasources/default.yaml
-    mode: '0755'
 
 #- name: Move main.json to /opt/grafana/provisioning/dashboards
 #  copy:
@@ -74,6 +80,7 @@
     dest: /tmp/main.json
     mode: '0755'
 
+
 - name: Import Grafana dashboard foo
   community.grafana.grafana_dashboard:
     grafana_url: "http://EdvinToome-2:3001"
@@ -83,3 +90,4 @@
     commit_message: Updated by ansible
     overwrite: yes
     path: /tmp/main.json
+    org_id: 1

@@ -3,22 +3,18 @@
   ansible.builtin.apt:
     name: haproxy
 
+- name: Start service haproxy, if not started
+  ansible.builtin.service:
+    name: haproxy
+    state: started
+    enabled: yes
+
 - name: Configure haproxy
   ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
   notify:
     - Restart haproxy
-
-- name: Start service haproxy, if not started
-  ansible.builtin.service:
-    name: haproxy
-    state: started
-
-- name: Enable service haproxy, and not touch the state
-  ansible.builtin.service:
-    name: haproxy
-    enabled: yes
 
 - name: Install HAProxy exporter
   ansible.builtin.apt:

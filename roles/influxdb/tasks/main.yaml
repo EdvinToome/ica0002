@@ -92,10 +92,7 @@
   template:
     src: telegraf.conf.j2
     dest: /etc/telegraf/telegraf.conf
-    mode: '777'
   notify: Restart telegraf
-
-
 
 - name: config rsyslog
   template:

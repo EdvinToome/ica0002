@@ -1,5 +1,15 @@
 acl corpnets { 192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; 172.17.0.0/16; };
 
+key "dns_transfer_key" {
+	algorithm hmac-sha256;
+	secret "{{ dns_transfer_key }}";
+};
+
+key "dns_update_key" {
+	algorithm hmac-sha256;
+	secret "{{ dns_update_key }}";
+};
+
 options {
         directory "/var/lib/bind";
         allow-query { corpnets; };
@@ -21,3 +31,5 @@ options {
 statistics-channels {
   inet 127.0.0.1 port 8053 allow { 127.0.0.1; };
 };
+
+

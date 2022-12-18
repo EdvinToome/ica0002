@@ -10,3 +10,27 @@ datasources:
     isDefault: true
     version: 1
     editable: true
+
+  - name: influxdb-pinger
+    type: influxdb
+    access: proxy
+    orgId: 1
+    uid: "influxdb-pinger"
+    url: "http://EdvinToome-2:8086"
+    database: latency
+    httpMethod: 'POST'
+    isDefault: true
+    version: 1
+    editable: true
+
+  - name: influxdb-telegraf
+    type: influxdb
+    access: proxy
+    orgId: 1
+    uid: "influxdb-telegraf"
+    url: "http://EdvinToome-2:8086"
+    database: telegraf
+    httpMethod: 'POST'
+    isDefault: true
+    version: 1
+    editable: true

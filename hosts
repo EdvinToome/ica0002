@@ -1,5 +1,5 @@
-EdvinToome-1 ansible_host=193.40.156.67 ansible_port=33322 ansible_ssh_user=ubuntu
-EdvinToome-2 ansible_host=193.40.156.67 ansible_port=37322 ansible_ssh_user=ubuntu
+EdvinToome-1 ansible_host=193.40.156.67 ansible_port=38122 ansible_ssh_user=ubuntu
+EdvinToome-2 ansible_host=193.40.156.67 ansible_port=41822 ansible_ssh_user=ubuntu
 
 [web_servers]
 EdvinToome-1
@@ -8,8 +8,25 @@ EdvinToome-1
 EdvinToome-1
 EdvinToome-2
 
-[dns_servers]
+[dns_slaves]
 EdvinToome-2
 
+[dns_masters]
+EdvinToome-1
+
+[dns_servers:children]
+dns_slaves
+dns_masters
+
 [grafana_servers]
+EdvinToome-2
+
+[influxdb_servers]
+EdvinToome-2
+
+[prometheus_servers]
+EdvinToome-2
+
+[agama_servers]
+EdvinToome-1
 EdvinToome-2

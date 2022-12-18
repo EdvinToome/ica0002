@@ -1,12 +1,15 @@
 $TTL	604800
-larsenbiscuits.io.	IN	SOA	EdvinToome-1.larsenbiscuits.io. edvin.larsenbiscuits.io. (
+{{ domain }}.	IN	SOA	EdvinToome-1.{{ domain }}. edvin.{{ domain }}. (
 			      2		; Serial
 			 604800		; Refresh
 			  86400		; Retry
 			2419200		; Expire
 			 604800 )	; Negative Cache TTL
 ;
-larsenbiscuits.io.	IN	NS	EdvinToome-1
-EdvinToome-1	IN	A	 {{ hostvars['EdvinToome-1']['ansible_default_ipv4']['address'] }}
-EdvinToome-2	IN	A	 {{ hostvars['EdvinToome-2']['ansible_default_ipv4']['address'] }}
+{% for vm in groups['all'] %}
+{{ domain }}. IN NS {{ vm }}
+{% endfor %}
+{% for vm in groups['all'] %}
+{{ vm }} IN A {{ hostvars[vm]['ansible_default_ipv4']['address'] }}
+{% endfor %}
 backup 			IN  A    {{ backup_server_ip }}

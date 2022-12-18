@@ -15,6 +15,38 @@ backup_server_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQG
 domain: "{{  startup_name  }}"
 #Node Exporter variables     
 
+dns_transfer_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38326363383761363030376237663035613631663437633231303135643538623230663331336132
+          3932636332323334383066313232343533626263643464310a613837663063646433613763346336
+          37366339613332366231616562393766643036306237653638616639633466663432376663663366
+          6439353336336461370a353665336338666466316130616432386465653630663637616630373330
+          3765
+
+dns_update_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37333566616333363962383730636665633635313033376438306639646436333263646434353866
+          3539383063353233643166623333646333323132653366320a393266333964373764656665363831
+          65373931366138333439623934363163633438353933353761643334333164653361656565666261
+          3461353935303336610a613264326361383562633534326334333164366266373730616636393564
+          3931
+
+dns_a_records:
+  backup: 192.168.42.132
+
+dns_cname_records:
+  grafana: "{{ groups['grafana_servers'][0] }}"
+  influxdb: "{{ groups['influxdb_servers'][0] }}"
+  lb1: "{{ groups['db_servers'][0] }}"
+  lb2: "{{ groups['db_servers'][1] }}"
+  mysql1: "{{ groups['db_servers'][0] }}"
+  mysql2: "{{ groups['db_servers'][1] }}"
+  ns1: "{{ groups['dns_servers'][0] }}"
+  ns2: "{{ groups['dns_servers'][1] }}"
+  prometheus: "{{ groups['prometheus_servers'][0] }}"
+  web1: "{{ groups['agama_servers'][0] }}"
+  web2: "{{ groups['agama_servers'][1] }}"
+
 node_exporter_version: "1.4.0"
 node_exporter_bin: /usr/local/bin/node_exporter
 node_exporter_user: node-exporter

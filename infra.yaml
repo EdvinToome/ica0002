@@ -1,18 +1,39 @@
 ---
   - name: Init
-    hosts: web_servers,db_servers
+    hosts: all
     become: yes
     gather_facts: yes
     roles:
       - init
+      - rsyslog
       - backup
+
     tags:
-      - init
+      - always
   - name: DNS server
     hosts: dns_servers
     become: yes
     roles:
       - bind
+      - bind_exporter
+    tags:
+      - d
+
+  - name: Prometheus
+    hosts: prometheus_servers
+    become: yes
+    roles:
+      - prometheus
+      - nginx_exporter
+    tags: prometheus
+
+  - name: Agama
+    hosts: agama_servers
+    become: yes
+    roles:
+      - docker
+      - agama
+    tags: agama
 
   - name: Database server
     hosts: db_servers
@@ -20,23 +41,23 @@
     roles:
       - docker
       - users
-      - agama
-
       - mysql
-      - prometheus
       - node_exporter
       - mysql_exporter
-      - bind_exporter
-      - nginx_exporter
-
-      - influxdb
-      - influxdb_exporter
       - mysql_backup
-      - influxdb_backup
       - keepalived
       - haproxy
     tags:
-      - db
+      - d
+
+  - name: InfluxDB
+    hosts: influxdb_servers
+    become: yes
+    roles:
+      - influxdb
+      - influxdb_exporter
+      - influxdb_backup
+    tags: influx
 
   - name: Grafana
     hosts: grafana_servers
@@ -52,16 +73,9 @@
     roles:
       - users
       - nginx
-      - uwsgi
-      - nginx
       - node_exporter
     tags:
-      - web
- # - name: Setup
- #   hosts: all
- #   become: yes
- #   gather_facts: yes
-  #  roles:
-  #    - setup
+      - w
+
 
 

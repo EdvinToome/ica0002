@@ -1,2 +1,4 @@
-nameserver {{ hostvars['EdvinToome-2']['ansible_default_ipv4']['address'] }}
+{% for host in groups['dns_slaves'] %}
+nameserver {{ hostvars[host]['ansible_default_ipv4']['address'] }}
+{% endfor %}
 search {{ startup_name }}

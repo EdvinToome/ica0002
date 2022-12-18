@@ -18,12 +18,21 @@
   notify:
     - Restart bind9
 
-- name: Configure 
+- name: Configure DB
   ansible.builtin.template:
     src: db.larsenbiscuits.io.j2
     dest: /var/lib/bind/db.larsenbiscuits.io
   notify:
     - Restart bind9
+  when: inventory_hostname in groups['dns_masters']
+
+- name: Configure DB rev
+  ansible.builtin.template:
+    src: db.rev.j2
+    dest: /var/lib/bind/db.rev
+  notify:
+    - Restart bind9
+  when: inventory_hostname in groups['dns_masters']
 
 - name: Configure DNS
   ansible.builtin.template:
