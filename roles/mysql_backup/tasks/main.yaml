@@ -19,22 +19,13 @@
   no_log: true
 
 
-- name: schedule MySQL dumps with Cron
-  ansible.builtin.cron:
-    name: "MySQL dump"
-    minute: "0"
-    hour: "0"
-    weekday: "0"
-    job: "mysqldump agama > /home/backup/mysql/agama.sql"
-    user: backup
-  when: inventory_hostname == mysql_backup_host
 
 - name: schedule MySQL dumps with Cron
   ansible.builtin.cron:
     name: "MySQL dump"
-    minute: "0"
-    hour: "0"
-    weekday: "0"
+    minute: "10"
+    hour: "16"
+    weekday: "2"
     job: "mysqldump agama > /home/backup/mysql/agama.sql"
     user: backup
   when: inventory_hostname == mysql_backup_host
@@ -42,9 +33,9 @@
 - name: schedule MySQL dumps with Cron
   ansible.builtin.cron:
     name: "Full Duplication"
-    minute: "0"
-    hour: "1"
-    weekday: "0"
+    minute: "11"
+    hour: "16"
+    weekday: "2"
     job: "duplicity --no-encryption full /home/backup/mysql/ rsync://EdvinToome@backup.larsenbiscuits.io/mysql"
     user: backup
   when: inventory_hostname == mysql_backup_host
@@ -52,9 +43,9 @@
 - name: schedule MySQL dumps with Cron
   ansible.builtin.cron:
     name: "Incremental Duplication"
-    minute: "0"
-    hour: "2"
-    weekday: "0"
+    minute: "12"
+    hour: "16"
+    weekday: "2"
     job: "duplicity --no-encryption incremental /home/backup/mysql/ rsync://EdvinToome@backup.larsenbiscuits.io/mysql"
     user: backup
   when: inventory_hostname == mysql_backup_host

@@ -8,17 +8,26 @@
 - name: schedule Influxdb dumps with Cron
   ansible.builtin.cron:
     name: "InfluxDB dump"
-    minute: "0"
-    hour: "0"
-    weekday: "0"
+    minute: "10"
+    hour: "16"
+    weekday: "2"
     job: "influxd backup -portable /home/backup/influxdb"
     user: backup
 
 - name: schedule Influxdb dumps with Cron
   ansible.builtin.cron:
     name: "Influxdb dump"
-    minute: "0"
-    hour: "1"
-    weekday: "0"
+    minute: "11"
+    hour: "16"
+    weekday: "2"
+    job: "duplicity --no-encryption full /home/backup/influxdb rsync://EdvinToome@backup.larsenbiscuits.io/influxdb"
+    user: backup
+
+- name: schedule Influxdb dumps with Cron
+  ansible.builtin.cron:
+    name: "Influxdb dump"
+    minute: "12"
+    hour: "16"
+    weekday: "2"
     job: "duplicity --no-encryption incremental /home/backup/influxdb rsync://EdvinToome@backup.larsenbiscuits.io/influxdb"
     user: backup
