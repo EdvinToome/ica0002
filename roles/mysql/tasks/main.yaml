@@ -41,15 +41,15 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
     host: "%"
     priv: "{{ mysql_database }}.*:ALL"
-    
+
 - name: MySQL user replication
   community.mysql.mysql_user:
-    name: "replication"
-    password: "{{ mysql_password }}"
+    name: "{{ mysql_replication_user }}"
+    password: "{{ replica_password }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
     priv: "*.*:SUPER,PROCESS,REPLICATION SLAVE,SELECT"
     host: "%"
-  
+
 - name: MySQL read only for replica server
   community.mysql.mysql_variables:
     variable: read_only

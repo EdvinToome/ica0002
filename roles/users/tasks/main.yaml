@@ -18,8 +18,5 @@
     state: present
     key: "{{ lookup('url', 'https://github.com/romankuchin.keys', split_lines=False) }}"
 
-- name: Add the user 'agama'
-  ansible.builtin.user:
-    name: agama
 
 

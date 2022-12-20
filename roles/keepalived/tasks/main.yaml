@@ -16,7 +16,7 @@
   ansible.builtin.service:
     name: keepalived
     state: started
-
+    enabled: yes
 
 #keepalived user
 - name: Add keepalived_script user

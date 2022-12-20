@@ -1,4 +1,12 @@
-acl corpnets { 192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; 172.17.0.0/16; };
+acl lan {
+{% for ip in allowed_query_ips %}
+	{{ ip }};
+{% endfor %}
+};
+
+acl docker {
+    172.17.0.0/24;
+};
 
 key "dns_transfer_key" {
 	algorithm hmac-sha256;
@@ -11,25 +19,25 @@ key "dns_update_key" {
 };
 
 options {
-        directory "/var/lib/bind";
-        allow-query { corpnets; };
-      
 
-         forwarders {
-              0.0.0.0;
-              1.1.1.1;
-              8.8.8.8;
-         };
+	directory "/var/lib/bind";
 
-     
-        dnssec-validation no;
+	forwarders {
+	{% for forwarder_ip in forwarder_ips %}
+		{{ forwarder_ip }};	
+	{% endfor %}
+	};
+	
+	allow-query {
+		lan;
+		docker;
+	};
 
-        listen-on-v6 { any; };
+	dnssec-validation no;
 
+	listen-on-v6 { any; };
 };
 
 statistics-channels {
   inet 127.0.0.1 port 8053 allow { 127.0.0.1; };
 };
-
-

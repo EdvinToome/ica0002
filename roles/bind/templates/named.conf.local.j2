@@ -1,15 +1,18 @@
 zone "larsenbiscuits.io" {
     {% if inventory_hostname in groups['dns_masters'] %}
-    type master;
-    allow-update {key dns_update_key;};
+	type master;
+	allow-update {key dns_update_key;};
 	allow-transfer {key dns_transfer_key;};
-    {% else %}
-    type slave;
-    masters { {{ hostvars[groups['dns_masters'][0]]['ansible_default_ipv4']['address'] }}  ; };
+	{% else %}
+	type slave;
+	masters {
+	{% for master in groups['dns_masters'] %}
+	    {{ hostvars[master]['ansible_default_ipv4']['address'] }};
+	{% endfor %}
+	};
     {% endif %}
-
-    file "db.larsenbiscuits.io";
-};   
+	file "db.larsenbiscuits.io";
+};
 
 {% if inventory_hostname in groups['dns_slaves'] %}
 
@@ -27,8 +30,8 @@ zone "168.192.in-addr.arpa" {
 	{% else %}
 	type slave;
 	masters {
-	{% for host in groups['dns_masters'] %}
-	    {{ hostvars[host]['ansible_default_ipv4']['address'] }};
+	{% for master in groups['dns_masters'] %}
+	    {{ hostvars[master]['ansible_default_ipv4']['address'] }};
 	{% endfor %}
 	};
     {% endif %}

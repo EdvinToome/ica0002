@@ -5,18 +5,19 @@
     home: /home/backup/
     ssh_key_file: /home/backup/.ssh/id_rsa
 
-- name: Add ssh key
-  ansible.builtin.known_hosts:
+- name: Create a 2048-bit SSH key 
+  ansible.builtin.user:
     name: backup
-    key: "backup ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
 
-- name: Add key
+- name: Copy known hosts
   ansible.builtin.template:
     src: known_hosts.j2
     dest: /home/backup/.ssh/known_hosts
     owner: backup
     group: backup
-    mode: 777
 
 - name: Create a directory /home/backup/restore
   ansible.builtin.file:

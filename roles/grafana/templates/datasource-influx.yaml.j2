@@ -6,7 +6,7 @@ datasources:
     access: proxy
     orgId: 1
     uid: "influxdb-pinger"
-    url: "http://EdvinToome-2:8086"
+    url: "http://{{ groups['influxdb_servers'][0] }}:8086"
     database: latency
     isDefault: true
     version: 1

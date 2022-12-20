@@ -37,10 +37,12 @@
 
 - name: Run agama container
   community.docker.docker_container:
-    name: agama
+    name: agama-{{ ((agama_containers | count) + item) if inventory_hostname == 'EdvinToome-2' else item  }}
     image: agama
     state: started
     user: "0:0"
-    published_ports: "{{ agama_port }}:8000"
+    restart_policy: always
+    published_ports: "{{ agama_port + item }}:8000"
     env:
-      AGAMA_DATABASE_URI: mysql+pymysql://{{ mysql_user }}:{{ mysql_password }}@{{ hostvars[mysql_host]['ansible_default_ipv4']['address'] }}/{{ mysql_database }}
+      AGAMA_DATABASE_URI: mysql+pymysql://{{ mysql_user }}:{{ mysql_password }}@{{ mysql_host }}/{{ mysql_database }}
+  loop: "{{ agama_containers }}"

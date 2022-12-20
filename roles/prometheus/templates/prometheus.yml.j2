@@ -6,7 +6,7 @@
   static_configs:
   - targets:
 {% for server in groups[prometheus_node_exporter_group] %}
-    - {{ server }}:9100
+    - {{ server }}:{{ node_exporter_port }}
 {% endfor %}
 {% endif %}
 - job_name: bind9
@@ -19,17 +19,19 @@
   scrape_interval: 15s
   static_configs:
   - targets:
-    - EdvinToome-2:9113
-- job_name: mysqld
+    - EdvinToome-1:{{ nginx_exporter_port }}
+    - EdvinToome-2:{{ nginx_exporter_port }}
+    - EdvinToome-3:{{ nginx_exporter_port }}
+- job_name: mysql
   scrape_interval: 15s
   static_configs:
   - targets:
-    - EdvinToome-2:9104
+    - EdvinToome-2:{{ mysql_exporter_port }}
 - job_name: influxdb
   scrape_interval: 15s
   static_configs:
   - targets:
-    - EdvinToome-2:9424
+    - EdvinToome-3:9424
 - job_name: haproxy
   scrape_interval: 15s
   static_configs:

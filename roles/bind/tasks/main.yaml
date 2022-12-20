@@ -1,27 +1,45 @@
 
 - name: Install bind9
   ansible.builtin.apt:
+    name: 
+      - bind9
+      - python3-dnspython
+    state: latest
+
+- name: Start service bind9, if not started
+  ansible.builtin.service:
     name: bind9
+    state: started
+    enabled: yes
+
 
 
 - name: Configure access rules for DNS server
   ansible.builtin.template:
     src: named.conf.options.j2
     dest: /etc/bind/named.conf.options
-  notify:
-    - Restart bind9
+  notify: Restart bind9
+  no_log: true
   
-- name: Configure 
+- name: Configure conf local
   ansible.builtin.template:
     src: named.conf.local.j2
     dest: /etc/bind/named.conf.local
   notify:
     - Restart bind9
 
-- name: Configure DB
+- name: Configure resolv.conf
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+  notify:
+    - Restart bind9
+
+- name: Configure DB.larsenbiscuits.io
   ansible.builtin.template:
     src: db.larsenbiscuits.io.j2
     dest: /var/lib/bind/db.larsenbiscuits.io
+    force: false
   notify:
     - Restart bind9
   when: inventory_hostname in groups['dns_masters']
@@ -30,13 +48,10 @@
   ansible.builtin.template:
     src: db.rev.j2
     dest: /var/lib/bind/db.rev
+    force: false
   notify:
     - Restart bind9
   when: inventory_hostname in groups['dns_masters']
 
-- name: Configure DNS
-  ansible.builtin.template:
-    src: resolv.conf.j2
-    dest: /etc/resolv.conf
-  notify:
-    - Restart bind9
+- name: Force flushers
+  ansible.builtin.meta: flush_handlers

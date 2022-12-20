@@ -23,6 +23,6 @@ while true; do
 #  result=$(fping $targets -q -C1 2>&1 | awk '{print "rtt,dst="$1" rtt="$3}')
 #  curl -i -XPOST "${db_url}/write?db=$db_name" --data-binary "$result" 1>/dev/null 2>/dev/null
 #  curl -i -XPOST '${db_url}/write?db=$db_name' --data-binary "$(fping $targets -q -C1 2>&1 | awk '{print "$db_name,dst="$1" rtt="$3}')" 1>/dev/null 2>/dev/null
-  curl -i -XPOST 'EdvinToome-2:8086/write?db=latency' --data-binary "$(fping google.com cloudflare.com twitter.com -q -C1 2>&1 | awk '{print "latency,dst="$1" rtt="$3}')" 1>/dev/null 2>/dev/null
+  curl -i -XPOST '{{ groups['prometheus_servers'][0] }}:8086/write?db=latency' --data-binary "$(fping google.com cloudflare.com twitter.com -q -C1 2>&1 | awk '{print "latency,dst="$1" rtt="$3}')" 1>/dev/null 2>/dev/null
  sleep 1
 done

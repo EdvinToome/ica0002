@@ -49,9 +49,6 @@
     enabled: yes
 
 
-- name: Change password
-  shell: 
-    cmd: grafana-cli admin reset-admin-password {{ mysql_password }}
 
 #- name: Create dashboards
 #  ansible.builtin.copy:

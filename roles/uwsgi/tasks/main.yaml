@@ -25,3 +25,4 @@
     dest: /etc/resolv.conf
   notify:
     - Restart uwsgi
+  no_log: true 

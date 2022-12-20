@@ -8,15 +8,17 @@
     name: nginx
     state: started
 
-- name: Enable service nginx, and not touch the state
-  ansible.builtin.service:
-    name: nginx
-    enabled: yes
-
 - name: NGINX config
   template:
     src: default.j2
     dest: /etc/nginx/sites-enabled/default
   notify:
     - Restart nginx
+
+- name: Enable service nginx, and not touch the state
+  ansible.builtin.service:
+    name: nginx
+    enabled: yes
+
+
 

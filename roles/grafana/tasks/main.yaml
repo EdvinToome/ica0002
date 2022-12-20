@@ -16,32 +16,26 @@
   template:
     src: grafana.ini.j2
     dest: /opt/grafana/grafana.ini
-
+  notify: restart grafana
 - name: Provisioning Grafana datasource
   template:
     src: datasource.yaml.j2
     dest: /opt/grafana/provisioning/datasources/default.yaml
     mode: '0755'
-
-- name: Provisioning Grafana Influx
-  template:
-    src: datasource-influx.yaml.j2
-    dest: /opt/grafana/provisioning/datasources/datasource-influx.yaml
-    mode: '0755'
+  notify: restart grafana
 
 - name: Run Grafana container
   community.docker.docker_container:
     name: grafana
     image: grafana/grafana:latest
     state: started
-    user: "0:0"
+    restart_policy: always
     published_ports: "{{ grafana_port }}:3000"
     volumes:
       - /opt/grafana:/etc/grafana
     env:
-      GF_SECURITY_ADMIN_PASSWORD: "{{ mysql_password }}"
+      GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_password }}"
       GF_SECURITY_ADMIN_USER: "admin"
-
 #- name: create prometheus datasource
 #  community.grafana.grafana_datasource:
 #    url: "http://EdvinToome-2:3001"
@@ -59,7 +53,7 @@
     path: /var/lib/grafana/dashboards
     state: directory
     mode: '0755'
-
+  notify: restart grafana
 #- name: Provisioning Grafana dashboard
 #  template:
 #    src: dashboard.yaml.j2
@@ -74,20 +68,34 @@
 #    mode: '0755'
 #
 
-- name: Import main.json
+- name: Import dashboard
   copy:
-    src: main.json
-    dest: /tmp/main.json
+    src: "{{ item }}"
+    dest: /opt/grafana/provisioning/dashboards/{{ item }}
     mode: '0755'
+  loop:
+    - main.json
+    - rsyslog.json
+    - mysql.json
 
 
-- name: Import Grafana dashboard foo
+- name: Wait for Grafana to start
+  wait_for:
+    port: 3001
+    host: EdvinToome-3
+    state: started
+    timeout: 120
+
+- name: Provision dashboard
   community.grafana.grafana_dashboard:
-    grafana_url: "http://EdvinToome-2:3001"
+    grafana_url: "http://EdvinToome-3:3001"
     url_username: "admin"
-    url_password: "{{ mysql_password }}"
+    url_password: "{{ grafana_password }}"
     state: present
     commit_message: Updated by ansible
     overwrite: yes
-    path: /tmp/main.json
-    org_id: 1
+    path: /opt/grafana/provisioning/dashboards/{{ item }}
+  loop:
+    - main.json
+    - rsyslog.json
+    - mysql.json
